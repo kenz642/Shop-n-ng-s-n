@@ -172,7 +172,7 @@ button:focus {
   }
 }
 .section {
-  margin-bottom: 115px;
+  margin-bottom: 60px;
 }
 .inner-section {
   margin-bottom: 100px;
@@ -5365,7 +5365,7 @@ tbody tr td:last-child {
 }
 .footer-links {
   display: -ms-grid;
-  display: grid;
+/*   display: grid; */
   grid-gap: 50px;
   -ms-grid-columns: 1fr 1fr;
   grid-template-columns: 1fr 1fr;

@@ -19,10 +19,7 @@ import javax.persistence.UniqueConstraint;
 
 import javax.persistence.JoinColumn;
 
-/**
- * @author DongTHD
- *
- */
+
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -127,5 +124,16 @@ public class User implements Serializable{
 	public void setRoles(Collection<Role> roles) {
 		this.roles = roles;
 	}
+	 public boolean isAccountLocked() {
+	        return !status;
+	    }
+
+	    public void lockAccount() {
+	        this.status = false;
+	    }
+
+	    public void unlockAccount() {
+	        this.status = true;
+	    }
 
 }

@@ -25,6 +25,8 @@ public interface ShoppingCartService {
 	void remove(CartItem item);
 
 	void add(CartItem item);
+	
+	public void updateQuantity(Long productId, int newQuantity);
 
 	void remove(Product product);
 

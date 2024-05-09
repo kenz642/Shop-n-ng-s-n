@@ -44,7 +44,7 @@ public class HomeController extends CommomController {
 	// list product ở trang chủ limit 10 sản phẩm mới nhất
 	@ModelAttribute("listProduct10")
 	public List<Product> listproduct10(Model model) {
-		List<Product> productList = productRepository.listProductNew20();
+		List<Product> productList = productRepository.listProductNew10();
 		model.addAttribute("productList", productList);
 		return productList;
 	}

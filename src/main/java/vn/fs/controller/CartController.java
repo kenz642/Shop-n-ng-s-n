@@ -2,6 +2,7 @@ package vn.fs.controller;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Optional;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,11 +14,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.paypal.api.payments.Links;
@@ -110,24 +116,47 @@ public class CartController extends CommomController {
 	}
 
 	// delete cartItem
-	@SuppressWarnings("unlikely-arg-type")
+//	@SuppressWarnings("unlikely-arg-type")
+//	@GetMapping(value = "/remove/{id}")
+//	public String remove(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
+//		Product product = productRepository.findById(id).orElse(null);
+//
+//		Collection<CartItem> cartItems = shoppingCartService.getCartItems();
+//		session = request.getSession();
+//		if (product != null) {
+//			CartItem item = new CartItem();
+//			BeanUtils.copyProperties(product, item);
+//			item.setProduct(product);
+//			item.setId(id);
+//			cartItems.remove(session);
+//			shoppingCartService.remove(item);
+//		}
+//		model.addAttribute("totalCartItems", shoppingCartService.getCount());
+//		return "redirect:/checkout";
+//	}
 	@GetMapping(value = "/remove/{id}")
 	public String remove(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
-		Product product = productRepository.findById(id).orElse(null);
-
-		Collection<CartItem> cartItems = shoppingCartService.getCartItems();
-		session = request.getSession();
-		if (product != null) {
-			CartItem item = new CartItem();
-			BeanUtils.copyProperties(product, item);
-			item.setProduct(product);
-			item.setId(id);
-			cartItems.remove(session);
-			shoppingCartService.remove(item);
-		}
-		model.addAttribute("totalCartItems", shoppingCartService.getCount());
-		return "redirect:/checkout";
+	    Collection<CartItem> cartItems = shoppingCartService.getCartItems();
+	    session = request.getSession();
+	    
+	    // Tìm và xóa CartItem từ id
+	    Optional<CartItem> optionalCartItem = cartItems.stream()
+	                                                   .filter(item -> item.getId().equals(id))
+	                                                   .findFirst();
+	    if (optionalCartItem.isPresent()) {
+	        CartItem itemToRemove = optionalCartItem.get();
+	        
+	        // Xóa CartItem khỏi giỏ hàng
+	        shoppingCartService.remove(itemToRemove);
+	        
+	        // Cập nhật danh sách cartItems trong session
+	        cartItems.remove(itemToRemove);
+	    }
+	    
+	    model.addAttribute("totalCartItems", shoppingCartService.getCount());
+	    return "redirect:/checkout";
 	}
+
 
 	// show check out
 	@GetMapping(value = "/checkout")
@@ -292,5 +321,15 @@ public class CartController extends CommomController {
 		return "web/checkout_paypal_success";
 
 	}
+	
+
+	@PutMapping(value = "/updateQuantity", params = { "productId", "quantity" })
+	public String updateQ(ModelMap model, HttpSession session, @RequestParam("productId") Long id,
+			@RequestParam("quantity") int qty) {
+		shoppingCartService.updateQuantity(id, qty);;
+
+		 return "web/shoppingCart_checkout";
+	}
+
 
 }

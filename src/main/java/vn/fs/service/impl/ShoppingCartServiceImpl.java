@@ -66,4 +66,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 	public void remove(Product product) {
 
 	}
+
+	@Override
+	public void updateQuantity(Long productId, int newQuantity) {
+		  CartItem item = map.get(productId);
+		    if (item != null) {
+		        item.setQuantity(newQuantity);
+		        item.setTotalPrice(item.getUnitPrice() * newQuantity);
+		    }
+	}
 }

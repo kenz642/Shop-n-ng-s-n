@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -74,8 +74,13 @@
 							<div class="card-header">
 								<section class="row">
 						           <div class="col-9 offset-1">
-						             <form th:action="@{/admin/addProduct}" th:object="${product}" method="post" enctype="multipart/form-data">
+						             <form th:action="@{/admin/updateProduct}" th:object="${product}" method="post" enctype="multipart/form-data">
 										<div class="row">
+										 	<div class="col-sm-12">
+							                       <label for="productId">ID <a style="color: red"><strong>*</strong></a></label>
+							                       <input type="hidden">
+							                       <input type="text" th:field="*{productId}" class="form-control" name="productId" id="productId" aria-describedby="categoryhelpId" placeholder="Mã sản phẩm ?" readonly="readonly">
+							               </div>
 											<div class="col-sm-12">
 												<div class="form-group form-group-default">
 													<label>Tên sản phẩm</label>

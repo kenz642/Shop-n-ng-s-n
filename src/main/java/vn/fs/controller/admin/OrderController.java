@@ -143,7 +143,7 @@ public class OrderController {
 
 		response.setContentType("application/octet-stream");
 		String headerKey = "Content-Disposition";
-		String headerValue = "attachement; filename=orders.xlsx";
+		String headerValue = "attachement; filename=donHang.xlsx";
 
 		response.setHeader(headerKey, headerValue);
 

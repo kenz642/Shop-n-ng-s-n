@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,10 +16,7 @@ import vn.fs.entities.Role;
 import vn.fs.entities.User;
 import vn.fs.repository.UserRepository;
 
-/**
- * @author DongTHD
- *
- */
+
 @Service
 public class UserDetailService implements UserDetailsService {
 
@@ -31,6 +29,12 @@ public class UserDetailService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException("Invalid username or password.");
 		}
+		
+		if (!user.getStatus()) {
+            throw new DisabledException("Tài khoản của bạn đã bị khóa.");
+        }
+
+		
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
 				mapRolesToAuthorities(user.getRoles()));
 

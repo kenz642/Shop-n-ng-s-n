@@ -51,25 +51,15 @@
 				
               </div>
               <div class="user-form-group">
-<!--                 <ul class="user-form-social"> -->
-<!--                   <li> -->
-<!--                     <a href="javascript:void(0);" class="facebook"> -->
-<!--                     	<i class="fab fa-facebook-f"></i>login with facebook -->
-<!--                     </a> -->
-<!--                   </li> -->
-
-<!--                   <li> -->
-<!--                     <a href="javascript:void(0);" class="google"> -->
-<!--                     	<i class="fab fa-google"></i>login with google -->
-<!--                     </a> -->
-<!--                   </li> -->
-
-<!--                 </ul> -->
-<!--                 <div class="user-form-divider"><p>hoặc</p></div> -->
                 
                 <form th:action="@{/doLogin}" method="post" class="user-form">
                 
                		 <!-- error message -->
+					
+					<div class="alert alert-danger" role="alert" th:if="${param.accountLocked}">
+					   <span> Tài khoản của bạn đã bị khóa. Vui lòng liên hệ với quản trị viên để biết thêm chi tiết.</span>
+					</div>
+					
 					<div th:if="${param.error}">
 						<div class="alert alert-danger"><span>Tài khoản hoặc mật khẩu không chính xác!</span></div>
 					</div>

@@ -6,10 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import vn.fs.repository.ProductRepository;
 
-/**
- * @author DongTHD
- *
- */
+
 @Controller
 public class LoginController {
 

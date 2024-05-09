@@ -89,7 +89,7 @@
                   <table class="table-list" th:if="${totalCartItems!=0}">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
+                        <th scope="col">STT</th>
                         <th scope="col">Sản phẩm</th>
                         <th scope="col">Tên sản phẩm</th>
 <!--                         <th scope="col">Đơn giá</th> -->
@@ -122,7 +122,7 @@
 						</td>
 
                         <td class="table-price">
-							    <h6 th:data-price="${item.product.productId}" th:price="${item.product.price}">[[${#numbers.formatDecimal(item.product.price - (item.product.price * item.product.discount/100), 1, 'DEFAULT', 0, 'DEFAULT')} +' đ']]/kg</h6>
+							    <h6 th:data-price="${item.product.productId}" th:price="${item.product.price - (item.product.price * item.product.discount/100)}">[[${#numbers.formatDecimal(item.product.price - (item.product.price * item.product.discount/100), 1, 'DEFAULT', 0, 'DEFAULT')} +' đ']]/kg</h6>
 							</td>
 							<td class="table-total" th:data-total="${item.product.productId}">
 							    <h6>[[${#numbers.formatDecimal(item.quantity * (item.product.price - (item.product.price * item.product.discount/100)), 1, 'DEFAULT', 0, 'DEFAULT')} +' đ']]</h6>
@@ -168,15 +168,30 @@
               </div>
             </div>
           </div>
+  
+  
           
     <script th:inline="javascript">
+    
+    function updateQuantity(productId, quantity) {
+        fetch('/updateQuantity?productId=' + productId + '&quantity=' + quantity, { method: 'PUT' })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Quantity updated successfully.');
+                } else {
+                    console.error('Failed to update quantity');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
     function increaseQuantity(productId) {
         var quantityInput = document.querySelector('[data-product="' + productId + '"]');
         var currentQuantity = parseInt(quantityInput.value);
-        console.log(currentQuantity);
-
         quantityInput.value = currentQuantity + 1;
+        updateQuantity(productId, currentQuantity + 1);
         updatePrice(productId);
+
     }
 
     function decreaseQuantity(productId) {
@@ -184,16 +199,24 @@
         var currentQuantity = parseInt(quantityInput.value);
         if (currentQuantity > 1) {
             quantityInput.value = currentQuantity - 1;
-            updatePrice(productId);
+            updateQuantity(productId, currentQuantity - 1);
         }
+        updatePrice(productId);
+
     }
+    
 
     function updatePrice(productId) {
         var quantityInput = document.querySelector('[data-product="' + productId + '"]');
-        var quantity = parseInt(quantityInput.value);
-        var pricePerUnit =document.querySelector('[data-price="' + productId + '"]');
-        var priceFinal = parseFloat(pricePerUnit.getAttribute('price'));
+		console.log(quantityInput);
 
+        var quantity = parseInt(quantityInput.value);
+		console.log(quantity);
+
+        var pricePerUnit =document.querySelector('[data-price="' + productId + '"]');
+		console.log(pricePerUnit);
+        var priceFinal = parseFloat(pricePerUnit.getAttribute('price'));
+		console.log(priceFinal);
         var totalPriceElement = document.querySelector('[data-total="' + productId + '"]');
 
         var totalPrice = quantity * priceFinal;

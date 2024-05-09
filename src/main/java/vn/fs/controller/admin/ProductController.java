@@ -134,6 +134,39 @@ public class ProductController{
 		return "admin/editProduct";
 	}
 
+	@PostMapping(value = "/updateProduct")
+	public String updateProduct(@ModelAttribute("product") Product product, Model model,
+	        @RequestParam("file") MultipartFile file, HttpServletRequest httpServletRequest) {
+
+	    // Kiểm tra nếu có file ảnh được tải lên
+	    if (!file.isEmpty()) {
+	        try {
+	            // Lưu file ảnh mới lên server
+	            File convFile = new File(pathUploadImage + "/" + file.getOriginalFilename());
+	            FileOutputStream fos = new FileOutputStream(convFile);
+	            fos.write(file.getBytes());
+	            fos.close();
+	            
+	            // Cập nhật tên file ảnh mới cho sản phẩm
+	            product.setProductImage(file.getOriginalFilename());
+	        } catch (IOException e) {
+	            // Xử lý nếu có lỗi khi lưu file
+	            e.printStackTrace();
+	        }
+	    }
+
+	    // Lưu thông tin sản phẩm vào cơ sở dữ liệu
+	    Product updatedProduct = productRepository.save(product);
+	    
+	    // Kiểm tra xem việc cập nhật sản phẩm thành công hay không và chuyển hướng tới trang danh sách sản phẩm
+	    if (updatedProduct != null) {
+	        model.addAttribute("message", "Update success");
+	    } else {
+	        model.addAttribute("message", "Update failure");
+	    }
+	    return "redirect:/admin/products";
+	}
+	
 	// delete category
 	@GetMapping("/deleteProduct/{id}")
 	public String delProduct(@PathVariable("id") Long id, Model model) {

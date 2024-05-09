@@ -100,7 +100,7 @@
                 <label class="details-list-title">Xem thêm:</label>
                 <ul class="details-tag-list">
                   <li th:each="item : ${categoryList}">
-                  	<a th:href="@{/productByCategory(categoryId=${item.categoryId})}">[[${item.categoryName}]]</a>
+                  	<a th:href="@{/productByCategory(id=${item.categoryId})}">[[${item.categoryName}]]</a>
                   </li>
                 </ul>
               </div>
