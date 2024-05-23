@@ -40,11 +40,16 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 						<button class="header-user">
 							<img src="/images/user.png" alt="user" />
 						</button>
+						
+						
 						<a th:href="@{/}"> <img src="/images/logo.png" alt="logo" />
 						</a>
-						<button class="header-src">
-							<i class="fas fa-search"></i>
-						</button>
+<!-- 						<button class="header-src"> -->
+<!-- 							<i class="fas fa-search"></i> -->
+<!-- 						</button> -->
+						<a class="header-widget-2 header-cart" title="Giỏ hàng">
+							<i class="fas fa-shopping-basket"></i> <sup th:text="${totalCartItems}" id="totalCartItems">0</sup>
+						</a>
 					</div>
 					
 					<a th:href="@{/}" class="header-logo" style="height: 100px;width: auto;">
@@ -74,9 +79,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 						<a th:href="@{/favorite}" class="header-widget" title="Yêu thích">
 							<i class="fas fa-heart"></i><sup th:text="${totalSave}" id="totalSave">0</sup>
 						</a>
-						<button class="header-widget header-cart" title="Giỏ hàng">
+						<a class="header-widget header-cart" title="Giỏ hàng">
 							<i class="fas fa-shopping-basket"></i> <sup th:text="${totalCartItems}" id="totalCartItems">0</sup>
-						</button>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -138,7 +143,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 								<div class="navbar-info">
 									<i class="icofont-ui-email"></i>
 									<p>
-										<small>email</small><span>greentyshop123@gmail.com</span>
+										<small>email</small><span>greenty@gmail.com</span>
 									</p>
 								</div>
 							</div>
@@ -162,7 +167,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 			
 			<div th:unless="${totalCartItems!=0}" class="text-center">
 				<h4 style="color: #119744" class="mt-5">Hiện tại bạn chưa có sản phẩm nào trong giỏ hàng!</h4>
-				<h5 style="color: #119744">Hãy mua sắm đi nào!</h5>
+				<h5 style="color: #119744">Mua sắp ngay nào!</h5>
 				<a th:href="@{/products}" style="text-decoration: underline;">Click tại đây!</a>
 			</div>
 			

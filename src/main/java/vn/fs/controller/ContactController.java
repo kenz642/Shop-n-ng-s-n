@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import vn.fs.commom.CommomDataService;
 import vn.fs.entities.User;
 
-/**
- * @author DongTHD
- *
- */
+
 @Controller
 public class ContactController extends CommomController {
 

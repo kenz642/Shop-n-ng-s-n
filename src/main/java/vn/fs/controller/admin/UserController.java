@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import vn.fs.entities.User;
 import vn.fs.repository.UserRepository;
 
-/**
- * @author DongTHD
- *
- */
+
 @Controller
 public class UserController{
 
@@ -24,6 +22,7 @@ public class UserController{
 	UserRepository userRepository;
 
 	@GetMapping(value = "/admin/users")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String customer(Model model, Principal principal) {
 		
 		User user = userRepository.findByEmail(principal.getName());
@@ -35,6 +34,8 @@ public class UserController{
 		return "/admin/users";
 	}
 	
+	
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
 	 @PostMapping(value = "/admin/users/{userId}/lock")
 	    public String lockUser(@PathVariable("userId") Long userId) {
 	        User user = userRepository.findById(userId).orElse(null);
@@ -45,6 +46,8 @@ public class UserController{
 	        return "redirect:/admin/users";
 	    }
 
+    
+    	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	    @PostMapping(value = "/admin/users/{userId}/unlock")
 	    public String unlockUser(@PathVariable("userId") Long userId) {
 	        User user = userRepository.findById(userId).orElse(null);

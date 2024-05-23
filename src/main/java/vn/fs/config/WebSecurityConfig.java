@@ -50,8 +50,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		http.csrf().disable();
 		
 		// Admin page
-		http.authorizeRequests().antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')");
-		
+//		http.authorizeRequests().antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/admin/**").access("hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')");
+
+        http.authorizeRequests().antMatchers("/admin/users/**").access("hasRole('ROLE_ADMIN')");
+
+        
 		// If you are not logged in, you will be redirected to the /login page.
 		http.authorizeRequests().antMatchers("/checkout").access("hasRole('ROLE_USER')");
 		
@@ -63,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			.loginProcessingUrl("/doLogin")
 			.loginPage("/login")
 			.defaultSuccessUrl("/?login_success")
-			.successHandler(new SuccessHandler()).failureUrl("/login?error=true")
+			.successHandler(new SuccessHandler()).failureUrl("/login?error=true&accountLocked=true")
 			.failureUrl("/login?error=true")
 			.permitAll()
 			.and()

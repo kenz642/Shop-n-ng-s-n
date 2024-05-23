@@ -8,10 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import vn.fs.entities.OrderDetail;
 
-/**
- * @author DongTHD
- *
- */
+
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
 
@@ -64,6 +61,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
     		+ "max(o.price) as max\r\n"
     		+ "FROM order_details o\r\n"
     		+ "INNER JOIN orders od ON o.order_id = od.order_id\r\n"
+    		+"WHERE od.status = '2' "  // Thêm điều kiện trạng thái hoàn thành
     		+ "GROUP BY month(od.order_date);", nativeQuery = true)
     public List<Object[]> repoWhereMonth();
     
@@ -80,7 +78,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
     public List<Object[]> repoWhereQUARTER();
     
     // Statistics by user
-    @Query(value = "SELECT c.user_id,\r\n"
+    @Query(value = "SELECT c.name,\r\n"
     		+ "SUM(o.quantity) as quantity,\r\n"
     		+ "SUM(o.quantity * o.price) as sum,\r\n"
     		+ "AVG(o.price) as avg,\r\n"
